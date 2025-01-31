@@ -1,6 +1,7 @@
 package game.managers;
 
 import game.models.BoardModel;
+import game.models.BoardStatus;
 import game.models.Players;
 import game.system.TicTacToePanel;
 
@@ -28,11 +29,18 @@ public class GameManager {
     }
 
     private void updateBoardStatus() {
-        //Update all Fields before the draw call
+        //Update all Boards and Fields before the draw call
+        //TODO this should move into GameManager.updateBoardStatus()
+        /*if (winStatusManager.checkSmallBoardWin(boardIndex, player)) {
+            targetBoard.boardStatus = BoardStatus.FINISHED;
+            targetBoard.winner = player;
+            System.out.println("Player " + player.toString() + " wins small board " + boardIndex);
+        }*/
     }
 
     public void mousePressed(MouseEvent e, TicTacToePanel panel) {
         if (turnManager.makeMoveByMouseClick(e, currentPlayerTurn)) {
+            updateBoardStatus();
             switchPlayer();
             panel.repaint();
 

@@ -1,8 +1,6 @@
 package game.managers;
 
-import game.models.BoardModel;
-import game.models.BoardStatus;
-import game.models.Players;
+import game.models.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.MouseEvent;
@@ -17,28 +15,25 @@ public class TurnManager {
         this.winStatusManager = winStatusManager;
     }
 
-    public boolean makeMove(int bigX, int bigY, int smallX, int smallY, Players player) {
-        int boardIndex = bigY * 3 + bigX;
-        if (boardModel.subBoards[boardIndex].boardStatus != BoardStatus.ACTIVE) {
+    public boolean makeMove(@NotNull SubBoardModel targetBoard, @NotNull FieldModel targetField, @NotNull Players player) {
+        if (targetBoard.boardStatus != BoardStatus.ACTIVE) {
             return false;
         }
-        if (boardModel.subBoards[boardIndex].fields[smallY][smallX].occupiedBy == Players.NONE) {
-            boardModel.subBoards[boardIndex].fields[smallY][smallX].occupiedBy = player;
-            if (winStatusManager.checkSmallBoardWin(boardIndex, player)) {
-                boardModel.subBoards[boardIndex].boardStatus = BoardStatus.FINISHED;
-                boardModel.subBoards[boardIndex].winner = player;
-                System.out.println("Player " + player.toString() + " wins small board " + boardIndex);
-            }
+        if (targetField.occupiedBy == Players.NONE) {
+            targetField.occupiedBy = player;
             return true;
         }
         return false;
     }
 
-    public boolean makeMoveByMouseClick(@NotNull MouseEvent e, Players player) {
+    public boolean makeMoveByMouseClick(@NotNull MouseEvent e, @NotNull Players player) {
         int bigX = e.getX() / 200;
         int bigY = e.getY() / 200;
-        int smallX = (e.getX() % 200) / 66;
-        int smallY = (e.getY() % 200) / 66;
-        return makeMove(bigX, bigY, smallX, smallY, player);
+        int fieldX = (e.getX() % 200) / 66;
+        int fieldY = (e.getY() % 200) / 66;
+        int boardIndex = bigY * 3 + bigX;
+        SubBoardModel targetBoard = boardModel.subBoards[boardIndex];
+        FieldModel targetField = boardModel.subBoards[boardIndex].fields[fieldY][fieldX];
+        return makeMove(targetBoard, targetField, player);
     }
 }
