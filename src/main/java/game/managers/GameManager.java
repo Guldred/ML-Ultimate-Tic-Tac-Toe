@@ -1,6 +1,7 @@
-package game.elements;
+package game.managers;
 
-import game.system.Players;
+import game.models.BoardModel;
+import game.models.Players;
 import game.system.TicTacToePanel;
 
 import javax.swing.*;
@@ -8,7 +9,7 @@ import java.awt.event.MouseEvent;
 
 public class GameManager {
     private final BoardModel boardModel;
-    private final BoardManager boardManager;
+    private final FrameUpdater frameUpdater;
     private final TurnManager turnManager;
     private final WinStatusManager winStatusManager;
 
@@ -16,14 +17,18 @@ public class GameManager {
 
     public GameManager() {
         this.boardModel = new BoardModel();
-        this.boardManager = new BoardManager(boardModel);
+        this.frameUpdater = new FrameUpdater(boardModel);
         this.winStatusManager = new WinStatusManager(boardModel);
         this.turnManager = new TurnManager(boardModel, winStatusManager);
         this.currentPlayerTurn = Players.X;
     }
 
-    public BoardManager getBoardManager() {
-        return this.boardManager;
+    public FrameUpdater getBoardManager() {
+        return this.frameUpdater;
+    }
+
+    private void updateBoardStatus() {
+        //Update all Fields before the draw call
     }
 
     public void mousePressed(MouseEvent e, TicTacToePanel panel) {

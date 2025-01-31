@@ -1,7 +1,6 @@
 package game.core;
 
-import game.elements.*;
-import game.system.Players;
+import game.managers.*;
 import game.system.TicTacToePanel;
 
 import javax.swing.*;

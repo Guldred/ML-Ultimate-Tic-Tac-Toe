@@ -1,7 +1,8 @@
-package game.elements;
+package game.managers;
 
-import game.system.BoardStatus;
-import game.system.Players;
+import game.models.BoardModel;
+import game.models.BoardStatus;
+import game.models.Players;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.MouseEvent;
@@ -18,15 +19,15 @@ public class TurnManager {
 
     public boolean makeMove(int bigX, int bigY, int smallX, int smallY, Players player) {
         int boardIndex = bigY * 3 + bigX;
-        if (boardModel.boardStatus[boardIndex] != BoardStatus.ACTIVE) {
+        if (boardModel.subBoards[boardIndex].boardStatus != BoardStatus.ACTIVE) {
             return false;
         }
-        if (boardModel.board[boardIndex][smallY][smallX] == ' ') {
-            boardModel.board[boardIndex][smallY][smallX] = player.toString().charAt(0);
+        if (boardModel.subBoards[boardIndex].fields[smallY][smallX].occupiedBy == Players.NONE) {
+            boardModel.subBoards[boardIndex].fields[smallY][smallX].occupiedBy = player;
             if (winStatusManager.checkSmallBoardWin(boardIndex, player)) {
-                boardModel.bigBoard[boardIndex] = player.toString().charAt(0);
-                System.out.println("Player " + player.toString().charAt(0) + " wins small board " + boardIndex);
-                boardModel.boardStatus[boardIndex] = player.toString().equals("X") ? BoardStatus.WON_X : BoardStatus.WON_O;
+                boardModel.subBoards[boardIndex].boardStatus = BoardStatus.FINISHED;
+                boardModel.subBoards[boardIndex].winner = player;
+                System.out.println("Player " + player.toString() + " wins small board " + boardIndex);
             }
             return true;
         }

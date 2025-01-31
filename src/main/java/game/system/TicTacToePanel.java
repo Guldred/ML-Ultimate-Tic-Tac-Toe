@@ -1,14 +1,14 @@
 package game.system;
 
-import game.elements.BoardManager;
+import game.managers.FrameUpdater;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class TicTacToePanel extends JPanel {
-    private final BoardManager board;
+    private final FrameUpdater board;
 
-    public TicTacToePanel(BoardManager board) {
+    public TicTacToePanel(FrameUpdater board) {
         this.board = board;
         setPreferredSize(new Dimension(600, 600)); // Richtige Fenstergröße setzen
     }
